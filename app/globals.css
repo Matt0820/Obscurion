@@ -1,0 +1,213 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Obscurion Dark Theme - Always dark */
+  --background: #050505;
+  --foreground: #e8e4dc;
+  --card: #0a0a0a;
+  --card-foreground: #e8e4dc;
+  --popover: #0a0a0a;
+  --popover-foreground: #e8e4dc;
+  --primary: #e8e4dc;
+  --primary-foreground: #050505;
+  --secondary: #1a1a1a;
+  --secondary-foreground: #e8e4dc;
+  --muted: #1a1a1a;
+  --muted-foreground: #6b6b6b;
+  --accent: #8b1a1a;
+  --accent-foreground: #e8e4dc;
+  --destructive: #7f1d1d;
+  --destructive-foreground: #fecaca;
+  --border: #2a2a2a;
+  --input: #1a1a1a;
+  --ring: #8b1a1a;
+  --radius: 0.25rem;
+
+  /* Custom colors for Obscurion */
+  --blood: #8b1a1a;
+  --blood-dark: #5c0f0f;
+  --bone: #e8e4dc;
+  --bone-dark: #c4bfb3;
+  --abyss: #050505;
+  --shadow: #0a0a0a;
+  --ash: #2a2a2a;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-serif: var(--font-cinzel), Georgia, serif;
+  --font-mono: 'Geist Mono', monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 4px);
+  
+  /* Custom Obscurion colors */
+  --color-blood: var(--blood);
+  --color-blood-dark: var(--blood-dark);
+  --color-bone: var(--bone);
+  --color-bone-dark: var(--bone-dark);
+  --color-abyss: var(--abyss);
+  --color-shadow: var(--shadow);
+  --color-ash: var(--ash);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Noise texture overlay */
+.noise-bg {
+  position: relative;
+}
+
+.noise-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Grunge border effect */
+.grunge-border {
+  position: relative;
+}
+
+.grunge-border::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--blood);
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* Gothic text style */
+.text-gothic {
+  font-family: var(--font-cinzel), 'Cinzel', Georgia, serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Blood glow effect */
+.blood-glow {
+  box-shadow: 0 0 20px rgba(139, 26, 26, 0.3),
+              0 0 40px rgba(139, 26, 26, 0.1);
+}
+
+.blood-glow-text {
+  text-shadow: 0 0 10px rgba(139, 26, 26, 0.5),
+               0 0 20px rgba(139, 26, 26, 0.3);
+}
+
+/* Hover lift effect */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Selection styling */
+::selection {
+  background-color: var(--blood);
+  color: var(--bone);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--abyss);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ash);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--blood-dark);
+}
+
+/* Focus styles */
+.focus-blood:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--blood);
+}
+
+/* Animated underline */
+.animated-underline {
+  position: relative;
+}
+
+.animated-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--blood);
+  transition: width 0.3s ease;
+}
+
+.animated-underline:hover::after {
+  width: 100%;
+}
+
+/* Badge styles */
+.badge-new {
+  background: var(--blood);
+  color: var(--bone);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.badge-sale {
+  background: var(--bone);
+  color: var(--abyss);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
