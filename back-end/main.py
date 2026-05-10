@@ -1,9 +1,18 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from database.database import criar_banco
 from routes import produto_routes, cliente_routes, carrinho_routes
 
 #inicializa a aplicação
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # endereço do Next.js
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(produto_routes.router)
 app.include_router(cliente_routes.router)
