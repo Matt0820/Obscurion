@@ -6,8 +6,8 @@ router = APIRouter(prefix="/cliente", tags=["Cliente"])
 
 @router.post('/')
 def criar_cliente(cliente: Cliente):
-    produto = cliente_service.criar_cliente(cliente)
-    return produto
+    cliente = cliente_service.criar_cliente(cliente)
+    return cliente
 @router.get('/')
 def listar_clientes():
     cliente = cliente_service.listar_clientes()
