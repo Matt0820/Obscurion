@@ -1,14 +1,16 @@
-class Produto:
-    def __init__(self, id_produto, nome, descricao, preco):
-        self.id_produto = id_produto
-        self.nome = nome
-        self.descricao = descricao
-        self.preco = preco
+#importando as libs necessarias para o desenvolvimento desse projeto
+from sqlmodel import SQLModel, Field
+from typing import Optional
 
-    def to_dict(self):
-        return {
-            'id_produto': self.id_produto,
-            'nome': self.nome,
-            'descricao': self.descricao,
-            'preco': self.preco
-        }
+
+#criando a classe produto, na qual cria um SQL com os atributos
+class Produto(SQLModel, table=True):
+    #Aqui nao precisamos de um metodo construtor pois o SQL model ja faz isso
+    #numero identificador
+    id: Optional[int] = Field(default=None, primary_key=True)
+    #atributos: autoexplicativo
+    nome: str
+    preco: float
+    estoque: int
+    tamanho: str
+    categoria: str
