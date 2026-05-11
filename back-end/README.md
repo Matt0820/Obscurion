@@ -1,35 +1,118 @@
 # Back-end Obscurion
 
-Esta pasta contém algumas classes e algumas coisas nas quais compõem meu back-end, no momento, ele está funcionando sem problemas.
-porem, no momento eu estou enfrentando alguns problemas com o desenvolvimento front-end.
-eles andam conflitando pois meu front-end nao foi 100% escrito por mim, eu estou cogitando re-escrever esse front-end pra uma melhor integração, sendo sincero, parece a alternativa mais plausivel.
+O **Back-end Obscurion** é um projeto desenvolvido com foco em aprendizado prático de arquitetura back-end, integração com banco de dados e construção de APIs utilizando FastAPI.
+O sistema simula um fluxo simples de e-commerce, permitindo cadastro de usuários, manipulação de produtos e gerenciamento de carrinho de compras.
+
+Apesar dos desafios durante o desenvolvimento, principalmente na integração com o front-end, o projeto serviu como uma experiência importante para consolidar conceitos de desenvolvimento web, organização de rotas e comunicação com banco de dados.
 
 ---
-## O que este back-end tem?
 
-O projeto tem alguns componentes que demonstram algumas coisas que aprendi durante minha formação e/ou li durante o desenvolvimento desse software!
-Esses são os componentes essenciais desse projeto:
+# Tecnologias utilizadas
 
-1. Rotas de serviço
-   * Como a Manipulação da classe Cliente, Produto ou Carrinho
-   * A Ligação da Classe "Carrinho" com os dois modelos idependentes que são os "clientes" e os "produtos"
-3. Requisições HTTP e integração com banco de dados
-   * O Servidor foi completamente feito em FastAPI e univorm para o desenvolvimento primordial, ou seja, sem esses dois, o SQLite nao funciona
-5. Serviços para o funcionamento integro com o sistema
-   * Como @app.get, post, delete para manipulação de dados. 
+* Python
+* FastAPI
+* Uvicorn
+* SQLite
+* SQLAlchemy *(caso utilize ORM)*
+* HTTP Requests
 
 ---
-## Qual é a rota que o usuario geralmente faz nesse projeto?
 
-O usuário padrão geralmente realiza esse caminho, entretanto, nao existe uma forma fixa de prever o que o usuario pode fazer:
+# Estrutura principal do projeto
 
+O sistema possui alguns componentes essenciais para o funcionamento da aplicação:
+
+## Rotas de serviço
+
+As rotas são responsáveis pela comunicação entre cliente e servidor, permitindo operações como:
+
+* Cadastro de clientes
+* Manipulação de produtos
+* Gerenciamento de carrinho
+* Associação entre clientes e produtos
+
+Exemplos de entidades presentes no projeto:
+
+* Cliente
+* Produto
+* Carrinho
+
+---
+
+## Integração com banco de dados
+
+O servidor foi desenvolvido utilizando **FastAPI** juntamente com **Uvicorn**, permitindo a execução da aplicação e integração com o banco SQLite.
+
+O banco de dados é responsável pelo armazenamento de:
+
+* Usuários cadastrados
+* Produtos disponíveis
+* Dados do carrinho
+* Informações de compra
+
+---
+
+## Serviços HTTP
+
+O sistema utiliza métodos HTTP para manipulação de dados, como:
+
+* `GET`
+* `POST`
+* `DELETE`
+
+Esses serviços permitem realizar operações básicas da API de forma organizada e escalável.
+
+---
+
+# Fluxo padrão do usuário
+
+Embora não exista um fluxo fixo, normalmente o usuário percorre o seguinte caminho:
+
+```txt
+Usuário entra no sistema
+    ↓
+Realiza o cadastro
+    ↓
+Navega pelo website
+    ↓
+Adiciona produtos ao carrinho
+    ↓
+Preenche um formulário simples
+    ↓
+Finaliza a compra
 ```
-O usuário entra no sistema > Realiza o cadastro > Navega pelo Website > Adiciona um produto ao carrinho > preenche um formulario simples > e realiza a compra
-```
 
 ---
-## Opinião pessoal
-### Andamento do projeto
 
-Acho que esse projeto anda sendo promissor, por mais complicado que vem sendo esse desenvolvimento, a culpa geral foi minha, por usar IA Generativa para front, por mais que tenha ficado do exato jeito que eu esperava
-Eu deveria ter desenvolvido eu mesmo com um design em sites como figma...
+# Sobre o front-end
+
+Atualmente, o principal desafio do projeto está na integração do front-end com o back-end.
+
+Grande parte da interface foi construída com auxílio de IA Generativa, o que acelerou o desenvolvimento inicial, porém acabou gerando problemas de manutenção, padronização e integração entre os componentes.
+
+Por esse motivo, existe a possibilidade de uma reestruturação completa do front-end futuramente, visando:
+
+* Melhor organização de código
+* Componentização adequada
+* Maior integração com a API
+* Facilidade de manutenção
+* Escalabilidade do projeto
+
+---
+
+# Objetivo do projeto
+
+Este projeto foi criado principalmente para:
+
+* Consolidar conhecimentos em desenvolvimento back-end
+* Aprender arquitetura de APIs
+* Trabalhar com integração de banco de dados
+* Entender fluxos de autenticação e manipulação de dados
+* Melhorar organização de projetos reais
+
+---
+
+# Status do projeto
+
+🚧 Em desenvolvimento.
+O back-end está funcional, enquanto o front-end passa por possíveis melhorias estruturais e reescrita parcial.
