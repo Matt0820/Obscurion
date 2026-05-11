@@ -13,7 +13,7 @@ Apesar dos desafios durante o desenvolvimento, principalmente na integração co
 * FastAPI
 * Uvicorn
 * SQLite
-* SQLAlchemy *(caso utilize ORM)*
+* SQLAlchemy
 * HTTP Requests
 
 ---
