@@ -1,10 +1,12 @@
 'use client'
 
-import { useState, use } from 'react'
+import { useEffect, useState, use } from 'react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Minus, Plus, ShoppingBag, ChevronRight, Truck, RefreshCw, Shield, Check } from 'lucide-react'
 import { products } from '@/data/products'
+import { SelecionarProduto } from '@/lib/api'
+import type { Product } from '@/types/product'
 import { formatCurrency } from '@/lib/format'
 import { useCartStore } from '@/store/cart-store'
 import { ProductGrid } from '@/components/product/product-grid'
@@ -17,16 +19,45 @@ interface ProductPageProps {
 
 export default function ProductPage({ params }: ProductPageProps) {
   const { slug } = use(params)
-  const product = products.find((p) => p.slug === slug)
+  const staticProduct = products.find((p) => p.slug === slug)
+  const apiProductId = Number(slug.match(/-(\d+)$/)?.[1])
+
+  const [apiProduct, setApiProduct] = useState<Product | null>(null)
+  const [isLoading, setIsLoading] = useState(!staticProduct && Boolean(apiProductId))
+  const [selectedSize, setSelectedSize] = useState('')
+  const [quantity, setQuantity] = useState(1)
+  const [isAdded, setIsAdded] = useState(false)
+  const addItem = useCartStore((state) => state.addItem)
+
+  useEffect(() => {
+    if (staticProduct || !apiProductId) return
+
+    setIsLoading(true)
+    SelecionarProduto(apiProductId)
+      .then(setApiProduct)
+      .catch(() => setApiProduct(null))
+      .finally(() => setIsLoading(false))
+  }, [apiProductId, staticProduct])
+
+  const product = staticProduct ?? apiProduct
+
+  useEffect(() => {
+    if (!product) return
+    setSelectedSize(product.sizes?.[0] || '')
+    setQuantity(1)
+  }, [product])
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen pt-20 lg:pt-24 flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-blood border-t-transparent rounded-full animate-spin" />
+      </div>
+    )
+  }
 
   if (!product) {
     notFound()
   }
-
-  const [selectedSize, setSelectedSize] = useState(product.sizes?.[0] || '')
-  const [quantity, setQuantity] = useState(1)
-  const [isAdded, setIsAdded] = useState(false)
-  const addItem = useCartStore((state) => state.addItem)
 
   const relatedProducts = products
     .filter((p) => p.categorySlug === product.categorySlug && p.id !== product.id)

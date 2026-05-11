@@ -1,13 +1,12 @@
 'use client'
 
-export const dynamic = 'force-dynamic'
+import { ListarProdutos } from "@/lib/api"
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Search, SlidersHorizontal, X, ChevronDown } from 'lucide-react'
 import { ProductGrid } from '@/components/product/product-grid'
 import { EmptyState } from '@/components/ui/empty-state'
-import { products } from '@/data/products'
 import { categories } from '@/data/categories'
 
 type SortOption = 'newest' | 'price-asc' | 'price-desc' | 'name'
@@ -26,81 +25,67 @@ const priceRanges = [
   { value: '100-200', label: 'R$100 - R$200' },
   { value: '200+', label: 'Acima de R$200' },
 ]
-
 export default function ProductsPage() {
+    // TODOS os hooks primeiro
   const searchParams = useSearchParams()
-  const initialCategory = searchParams.get('category') || 'all'
-  const initialFilter = searchParams.get('filter') || ''
-
+  const [products, setProdutos] = useState<any[]>([])
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState(initialCategory)
+  const [selectedCategory, setSelectedCategory] = useState('all')
   const [selectedPrice, setSelectedPrice] = useState('all')
   const [sortBy, setSortBy] = useState<SortOption>('newest')
   const [showFilters, setShowFilters] = useState(false)
 
+  useEffect(() => {
+      ListarProdutos()
+          .then(data => setProdutos(data))
+          .catch(err => console.error('ERRO:', err))
+  }, [])
+
+  // DEPOIS a lógica
+  const initialCategory = searchParams.get('category') || 'all'
+  const initialFilter = searchParams.get('filter') || ''
+  
   const filteredProducts = useMemo(() => {
-    let result = [...products]
+      let result = [...products]
 
-    // Filter by search query
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase()
-      result = result.filter(
-        (p) =>
-          p.name.toLowerCase().includes(query) ||
-          p.category.toLowerCase().includes(query) ||
-          p.tags.some((t) => t.toLowerCase().includes(query))
-      )
-    }
+      if (searchQuery) {
+          const query = searchQuery.toLowerCase()
+          result = result.filter((p) =>
+              p.nome.toLowerCase().includes(query) ||
+              p.categoria.toLowerCase().includes(query)
+          )
+      }
 
-    // Filter by category
-    if (selectedCategory !== 'all') {
-      result = result.filter((p) => p.categorySlug === selectedCategory)
-    }
+      if (selectedCategory !== 'all') {
+          result = result.filter((p) => p.categoria === selectedCategory)
+      }
 
-    // Filter by new items
-    if (initialFilter === 'new') {
-      result = result.filter((p) => p.isNew)
-    }
+      if (selectedPrice !== 'all') {
+          const [min, max] = selectedPrice.split('-').map((v) => v === '+' ? Infinity : parseInt(v))
+          result = result.filter((p) => p.preco >= min && p.preco <= (max ?? Infinity))
+      }
 
-    // Filter by price range
-    if (selectedPrice !== 'all') {
-      const [min, max] = selectedPrice.split('-').map((v) => (v === '+' ? Infinity : parseInt(v)))
-      result = result.filter((p) => {
-        if (max === undefined) return p.price >= min
-        return p.price >= min && p.price <= max
-      })
-    }
+      switch (sortBy) {
+          case 'price-asc': result.sort((a, b) => a.preco - b.preco); break
+          case 'price-desc': result.sort((a, b) => b.preco - a.preco); break
+          case 'name': result.sort((a, b) => a.nome.localeCompare(b.nome)); break
+      }
 
-    // Sort
-    switch (sortBy) {
-      case 'price-asc':
-        result.sort((a, b) => a.price - b.price)
-        break
-      case 'price-desc':
-        result.sort((a, b) => b.price - a.price)
-        break
-      case 'name':
-        result.sort((a, b) => a.name.localeCompare(b.name))
-        break
-      case 'newest':
-      default:
-        result.sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0))
-    }
-
-    return result
-  }, [searchQuery, selectedCategory, selectedPrice, sortBy, initialFilter])
-
-  const clearFilters = () => {
-    setSearchQuery('')
-    setSelectedCategory('all')
-    setSelectedPrice('all')
-    setSortBy('newest')
-  }
+      return result
+  }, [products, searchQuery, selectedCategory, selectedPrice, sortBy])
 
   const hasActiveFilters = searchQuery || selectedCategory !== 'all' || selectedPrice !== 'all'
 
+  const clearFilters = () => {
+      setSearchQuery('')
+      setSelectedCategory('all')
+      setSelectedPrice('all')
+      setSortBy('newest')
+  }
+
   return (
     <div className="min-h-screen pt-20 lg:pt-24">
+      <p style={{color: 'red'}}>produtos carregados: {products.length}</p>
       {/* Header */}
       <div className="bg-shadow border-b border-ash/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
