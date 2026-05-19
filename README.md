@@ -5,10 +5,10 @@
 > *E-commerce com alma — onde a arquitetura encontra o rock.*
 
 [![Status](https://img.shields.io/badge/status-em%20desenvolvimento-blueviolet?style=flat-square)](https://github.com/Matt0820/Obscurion-store)
-[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)](https://nextjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)](https://nextjs.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Python-009688?style=flat-square&logo=fastapi)](https://fastapi.tiangolo.com/)
 [![SQLite](https://img.shields.io/badge/banco-SQLite-003B57?style=flat-square&logo=sqlite)](https://www.sqlite.org/)
-[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3-38BDF8?style=flat-square&logo=tailwindcss)](https://tailwindcss.com/)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4-38BDF8?style=flat-square&logo=tailwindcss)](https://tailwindcss.com/)
 
 </div>
 
@@ -16,78 +16,72 @@
 
 ## 📌 Sobre o Projeto
 
-**Obscurion Store** é um projeto pessoal desenvolvido para demonstrar habilidades em desenvolvimento full-stack, com foco principal em **back-end, arquitetura de APIs, modelagem de banco de dados e integração entre serviços**.
+**Obscurion Store** é um projeto full-stack de e-commerce temático voltado ao universo do rock e metal, com foco em back-end, API REST, banco de dados e integração com front-end.
 
-A ideia surgiu da vontade de criar algo com identidade própria: um e-commerce temático voltado ao universo do **rock e metal** — estética sombria, funcionalidade real, código sólido.
-
-O front-end foi construído com auxílio de inteligência artificial para acelerar a parte visual da aplicação, deixando espaço para aprofundar o que realmente importa: **lógica de negócio, escalabilidade e boas práticas de engenharia**.
+A interface mantém a estética sombria original, mas agora evita produtos “fantasma”: a listagem da homepage e da página de produtos usa a API como fonte principal.
 
 ---
 
-## 🎯 Objetivos
-
-Este projeto é um laboratório prático de conceitos reais usados em produção:
-
-- Autenticação e autorização de usuários
-- Arquitetura back-end modular e escalável
-- Modelagem e persistência de dados
-- Criação e consumo de APIs REST
-- Integração entre serviços
-- Segurança em aplicações web
-- Separação de responsabilidades (Clean Architecture / camadas)
-- Organização de código para projetos de médio/grande porte
-
-Além de portfólio técnico, o projeto serve como forma de **expressar personalidade através da tecnologia**.
-
----
-
-## 🛠️ Stack Tecnológica
+## 🛠️ Stack
 
 ### Front-end
-| Tecnologia | Uso |
-|---|---|
-| [Next.js](https://nextjs.org/) + React | Framework principal, SSR e roteamento |
-| [TailwindCSS](https://tailwindcss.com/) | Estilização utilitária |
-| Node.js | Runtime e tooling |
+
+- Next.js + React
+- TailwindCSS
+- Zustand para carrinho local
 
 ### Back-end
-| Tecnologia | Uso |
-|---|---|
-| [Python](https://www.python.org/) + [FastAPI](https://fastapi.tiangolo.com/) | API principal, regras de negócio |
-| [Express.js](https://expressjs.com/) | Serviços auxiliares / microsserviços |
 
-### Banco de Dados
-| Tecnologia | Uso |
-|---|---|
-| [SQLite](https://www.sqlite.org/) | Persistência de dados |
+- Python
+- FastAPI
+- SQLModel
+- SQLite
 
 ---
 
-## 🗂️ Estrutura do Projeto
+## 🗂️ Estrutura atual
 
-```
-obscurion-store/
-├── frontend/          # Next.js + React + Tailwind
-├── backend/           # FastAPI (Python)
-│   ├── api/
+```txt
+Obscurion/
+├── backend/                  # FastAPI + SQLite
+│   ├── database/
 │   ├── models/
+│   ├── routes/
 │   ├── services/
-│   └── database/
-├── services/          # Express.js (serviços auxiliares)
+│   ├── main.py
+│   └── obscurion.db
+├── frontend/                 # Next.js
+│   ├── src/
+│   │   ├── app/
+│   │   ├── components/
+│   │   ├── data/
+│   │   ├── hooks/
+│   │   ├── lib/
+│   │   ├── store/
+│   │   └── types/
+│   ├── package.json
+│   └── tsconfig.json
+├── iniciar.bat
 └── README.md
 ```
 
-> A estrutura pode evoluir conforme o projeto cresce.
-
 ---
 
-## 🚀 Como Rodar Localmente
+## 🚀 Como rodar localmente
 
-### Pré-requisitos
+### Back-end
 
-- Node.js 18+
-- Python 3.11+
-- npm ou yarn
+```bash
+cd backend
+pip install -r requirements.txt
+uvicorn main:app --reload
+```
+
+A API sobe por padrão em:
+
+```txt
+http://localhost:8000
+```
 
 ### Front-end
 
@@ -97,39 +91,26 @@ npm install
 npm run dev
 ```
 
-### Back-end (FastAPI)
+O front-end busca a API em `http://localhost:8000` por padrão.
 
-```bash
-cd backend
-pip install -r requirements.txt
-uvicorn main:app --reload
-```
+Para mudar a URL da API, crie um arquivo `.env.local` dentro de `frontend/`:
 
-### Serviços (Express)
-
-```bash
-cd services
-npm install
-npm run dev
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
 
 ---
 
-## 🔮 Roadmap
+## 🔧 Ajustes feitos nesta refatoração
 
-- [ ] Catálogo de produtos
-- [ ] Autenticação (JWT)
-- [ ] Carrinho de compras
-- [ ] Sistema de pedidos
-- [ ] Painel administrativo
-- [ ] Integração com gateway de pagamento
-- [ ] Deploy em produção
-
----
-
-## 👤 Autor
-
-Desenvolvido por **[Matt0820](https://github.com/Matt0820)** — projeto pessoal de portfólio.
+- Homepage deixou de usar produtos mockados como fonte principal.
+- Página `/products` passou a consumir produtos normalizados vindos da API.
+- Página de detalhe passou a buscar produto pelo ID presente no slug.
+- API do front foi centralizada em `src/lib/api.ts`.
+- Variáveis problemáticas foram renomeadas para nomes mais claros.
+- Estrutura do front foi organizada em `frontend/src/`.
+- Pastas raiz foram simplificadas para `frontend/` e `backend/`.
+- Caminho do SQLite foi fixado para evitar criação de banco em local errado.
 
 ---
 
